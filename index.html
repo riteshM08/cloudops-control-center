@@ -81,9 +81,9 @@
         </div>
 
         <div class="topbar-actions">
-          <div class="status-pill">
+          <div class="status-pill" id="platform-status">
             <span class="status-dot status-dot--live"></span>
-            All systems operational
+            Checking platform status…
           </div>
           <button class="icon-button" id="refresh-button" aria-label="Refresh dashboard" title="Refresh dashboard">↻</button>
           <button class="avatar" aria-label="Account menu">RM</button>
@@ -106,49 +106,49 @@
         <div class="metric-grid">
           <article class="metric-card">
             <div class="metric-card__top">
-              <span class="metric-label">Compute health</span>
-              <span class="metric-icon">CPU</span>
+              <span class="metric-label">Repository stars</span>
+              <span class="metric-icon">GH</span>
             </div>
-            <div class="metric-value">99.98<span>%</span></div>
+            <div class="metric-value" id="repo-stars">—</div>
             <div class="metric-foot">
-              <span class="trend trend--up">↑ 0.24%</span>
-              <span class="muted">vs last 24h</span>
+              <span class="trend trend--up" id="repo-stars-trend">Live</span>
+              <span class="muted">GitHub API</span>
             </div>
           </article>
 
           <article class="metric-card">
             <div class="metric-card__top">
-              <span class="metric-label">Active services</span>
-              <span class="metric-icon">SVC</span>
+              <span class="metric-label">Forks</span>
+              <span class="metric-icon">GH</span>
             </div>
-            <div class="metric-value">24</div>
+            <div class="metric-value" id="repo-forks">—</div>
             <div class="metric-foot">
-              <span class="trend trend--steady">● Stable</span>
-              <span class="muted">across 5 regions</span>
+              <span class="trend trend--steady">Live</span>
+              <span class="muted">GitHub API</span>
             </div>
           </article>
 
           <article class="metric-card">
             <div class="metric-card__top">
-              <span class="metric-label">Open incidents</span>
-              <span class="metric-icon">INC</span>
+              <span class="metric-label">Open issues</span>
+              <span class="metric-icon">GH</span>
             </div>
-            <div class="metric-value">02</div>
+            <div class="metric-value" id="repo-issues">—</div>
             <div class="metric-foot">
-              <span class="trend trend--down">↓ 33%</span>
-              <span class="muted">vs last week</span>
+              <span class="trend trend--down">Live</span>
+              <span class="muted">repository signal</span>
             </div>
           </article>
 
           <article class="metric-card metric-card--accent">
             <div class="metric-card__top">
-              <span class="metric-label">Monthly availability</span>
-              <span class="metric-icon">SLA</span>
+              <span class="metric-label">GitHub API latency</span>
+              <span class="metric-icon">HTTP</span>
             </div>
-            <div class="metric-value">99.97<span>%</span></div>
+            <div class="metric-value" id="api-latency">—<span>ms</span></div>
             <div class="metric-foot">
-              <span class="trend trend--up">Healthy</span>
-              <span class="muted">target ≥ 99.90%</span>
+              <span class="trend trend--up" id="api-latency-status">Measuring</span>
+              <span class="muted">browser → GitHub</span>
             </div>
           </article>
         </div>
@@ -157,38 +157,24 @@
           <article class="panel panel--wide">
             <div class="panel-header">
               <div>
-                <p class="panel-kicker">THROUGHPUT</p>
-                <h3>Request volume</h3>
+                <p class="panel-kicker">LIVE GIT SIGNAL</p>
+                <h3>Repository activity</h3>
               </div>
               <div class="panel-actions">
                 <span class="live-chip"><span class="status-dot status-dot--live"></span> Live</span>
-                <button class="ghost-button">24H ▾</button>
+                <span class="data-source">GitHub</span>
               </div>
             </div>
             <div class="chart-wrap" aria-label="Request volume chart">
-              <div class="chart-y-labels">
-                <span>120k</span>
-                <span>90k</span>
-                <span>60k</span>
-                <span>30k</span>
-                <span>0</span>
+              <div class="chart-y-labels" id="commit-chart-y-labels">
+                <span>—</span><span>—</span><span>—</span><span>—</span><span>0</span>
               </div>
               <div class="chart">
                 <div class="chart-grid-lines">
                   <span></span><span></span><span></span><span></span><span></span>
                 </div>
-                <svg viewBox="0 0 760 240" role="img" aria-label="Area chart showing request traffic">
-                  <defs>
-                    <linearGradient id="area-fill" x1="0" x2="0" y1="0" y2="1">
-                      <stop offset="0%" stop-color="#7c9cff" stop-opacity=".35"/>
-                      <stop offset="100%" stop-color="#7c9cff" stop-opacity="0"/>
-                    </linearGradient>
-                  </defs>
-                  <path class="chart-area" d="M0,198 C35,185 58,188 90,164 S145,155 180,168 S235,180 270,138 S320,122 356,136 S411,150 445,103 S500,82 534,110 S585,102 616,78 S665,62 705,86 S735,54 760,65 L760,240 L0,240 Z"/>
-                  <path class="chart-line" d="M0,198 C35,185 58,188 90,164 S145,155 180,168 S235,180 270,138 S320,122 356,136 S411,150 445,103 S500,82 534,110 S585,102 616,78 S665,62 705,86 S735,54 760,65"/>
-                  <circle class="chart-point" cx="534" cy="110" r="5"/>
-                </svg>
-                <div class="chart-x-labels">
+                <div class="commit-chart" id="commit-chart" aria-label="Recent repository commit activity"></div>
+                <div class="chart-x-labels" id="commit-chart-labels">
                   <span>00:00</span><span>04:00</span><span>08:00</span><span>12:00</span><span>16:00</span><span>20:00</span><span>24:00</span>
                 </div>
               </div>
@@ -198,52 +184,13 @@
           <article class="panel">
             <div class="panel-header">
               <div>
-                <p class="panel-kicker">REGIONS</p>
-                <h3>Service status</h3>
+                <p class="panel-kicker">REGIONAL TELEMETRY</p>
+                <h3>Current conditions</h3>
               </div>
-              <button class="text-button">View all →</button>
+              <span class="data-source">Open-Meteo</span>
             </div>
-            <div class="region-list">
-              <div class="region-row">
-                <div class="region-name">
-                  <span class="region-flag">IN</span>
-                  <div><strong>Mumbai</strong><span>ap-south-1</span></div>
-                </div>
-                <div class="region-stat"><strong>99.99%</strong><span>Operational</span></div>
-                <span class="status-dot status-dot--live"></span>
-              </div>
-              <div class="region-row">
-                <div class="region-name">
-                  <span class="region-flag">SG</span>
-                  <div><strong>Singapore</strong><span>ap-southeast-1</span></div>
-                </div>
-                <div class="region-stat"><strong>99.98%</strong><span>Operational</span></div>
-                <span class="status-dot status-dot--live"></span>
-              </div>
-              <div class="region-row">
-                <div class="region-name">
-                  <span class="region-flag">UK</span>
-                  <div><strong>London</strong><span>eu-west-2</span></div>
-                </div>
-                <div class="region-stat"><strong>99.97%</strong><span>Operational</span></div>
-                <span class="status-dot status-dot--live"></span>
-              </div>
-              <div class="region-row">
-                <div class="region-name">
-                  <span class="region-flag">US</span>
-                  <div><strong>Virginia</strong><span>us-east-1</span></div>
-                </div>
-                <div class="region-stat"><strong>99.99%</strong><span>Operational</span></div>
-                <span class="status-dot status-dot--live"></span>
-              </div>
-              <div class="region-row">
-                <div class="region-name">
-                  <span class="region-flag">JP</span>
-                  <div><strong>Tokyo</strong><span>ap-northeast-1</span></div>
-                </div>
-                <div class="region-stat"><strong>99.96%</strong><span>Operational</span></div>
-                <span class="status-dot status-dot--live"></span>
-              </div>
+            <div class="region-list" id="region-list">
+              <div id="region-list-loading" class="empty-state">Loading live regional telemetry…</div>
             </div>
           </article>
 
@@ -253,14 +200,14 @@
                 <p class="panel-kicker">DELIVERY</p>
                 <h3>Deployment pipeline</h3>
               </div>
-              <span class="live-chip">main</span>
+              <span class="live-chip" id="branch-name">main</span>
             </div>
             <div class="pipeline">
               <div class="pipeline-step is-complete"><span>1</span><div><strong>Build</strong><small>passed in 19s</small></div></div>
               <div class="pipeline-connector is-complete"></div>
               <div class="pipeline-step is-complete"><span>2</span><div><strong>Test</strong><small>42 checks passed</small></div></div>
               <div class="pipeline-connector is-complete"></div>
-              <div class="pipeline-step is-current"><span>3</span><div><strong>Deploy</strong><small>production ready</small></div></div>
+              <div class="pipeline-step is-current"><span>3</span><div><strong>Deploy</strong><small id="latest-release">release signal pending</small></div></div>
               <div class="pipeline-connector"></div>
               <div class="pipeline-step"><span>4</span><div><strong>Verify</strong><small>awaiting rollout</small></div></div>
             </div>
@@ -274,7 +221,7 @@
               </div>
               <button class="text-button">Open log →</button>
             </div>
-            <div class="activity-list">
+            <div class="activity-list" id="activity-list">
               <div class="activity-row"><span class="activity-icon activity-icon--success">✓</span><div><strong>Deployment completed</strong><span>cloud-api v2.4.1</span></div><time>2m</time></div>
               <div class="activity-row"><span class="activity-icon">↗</span><div><strong>Traffic threshold updated</strong><span>edge-gateway / 80k rpm</span></div><time>11m</time></div>
               <div class="activity-row"><span class="activity-icon">↻</span><div><strong>Health check refreshed</strong><span>mumbai / all green</span></div><time>18m</time></div>
@@ -285,13 +232,14 @@
 
         <footer class="footer-note">
           <span>CloudOps Control Center</span>
-          <span>Frontend monitoring workspace</span>
+          <span>Live data: GitHub · Cloudflare · Open-Meteo</span>
         </footer>
       </section>
     </main>
   </div>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="js/api.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>
