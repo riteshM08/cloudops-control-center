@@ -213,3 +213,74 @@ button { font: inherit; }
   .pipeline-step { min-width: 0; }
   .footer-note { flex-direction: column; }
 }
+
+.data-source {
+  color: var(--muted-2);
+  font: 500 8px "DM Mono", monospace;
+  letter-spacing: .04em;
+}
+
+.status-pill.is-degraded {
+  color: var(--warning);
+  border-color: rgba(239,189,105,.16);
+  background: rgba(239,189,105,.05);
+}
+
+.status-pill.is-degraded .status-dot {
+  background: var(--warning);
+  box-shadow: 0 0 0 3px rgba(239,189,105,.07);
+}
+
+.commit-chart {
+  position: absolute;
+  inset: 0 0 23px;
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 5px;
+  padding: 9px 2px 0;
+}
+
+.commit-bar-wrap {
+  position: relative;
+  display: flex;
+  align-items: end;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.commit-bar {
+  display: block;
+  width: min(18px, 70%);
+  min-height: 2px;
+  border-radius: 5px 5px 2px 2px;
+  background: linear-gradient(180deg, var(--accent-2), rgba(124,156,255,.34));
+  box-shadow: 0 0 13px rgba(124,156,255,.09);
+}
+
+.commit-bar-wrap:hover .commit-bar {
+  background: var(--accent-2);
+}
+
+.commit-bar-wrap small {
+  position: absolute;
+  bottom: calc(var(--bar-height, 10%) + 5px);
+  color: var(--muted);
+  font: 400 7px "DM Mono", monospace;
+  pointer-events: none;
+}
+
+.empty-state {
+  display: grid;
+  place-items: center;
+  min-height: 90px;
+  color: var(--muted);
+  font: 400 9px "DM Mono", monospace;
+  text-align: center;
+}
+
+@media (max-width: 520px) {
+  .data-source { display: none; }
+  .commit-bar { width: min(13px, 75%); }
+}
