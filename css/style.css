@@ -555,3 +555,173 @@ button { font: inherit; }
   .source-list > div { grid-template-columns: auto minmax(0,1fr); }
   .source-list a { grid-column: 2; margin-top: 4px; }
 }
+
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: .28;
+  background-image:
+    linear-gradient(rgba(150,170,205,.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(150,170,205,.025) 1px, transparent 1px);
+  background-size: 42px 42px;
+  mask-image: linear-gradient(to bottom, black, transparent 86%);
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  top: -180px;
+  right: 12%;
+  width: 460px;
+  height: 460px;
+  z-index: -1;
+  pointer-events: none;
+  border-radius: 50%;
+  background: rgba(92,126,236,.08);
+  filter: blur(80px);
+  animation: ambient-drift 16s ease-in-out infinite alternate;
+}
+
+@keyframes ambient-drift {
+  from { transform: translate3d(-18px, 8px, 0) scale(.94); }
+  to { transform: translate3d(26px, 34px, 0) scale(1.08); }
+}
+
+.view-enter {
+  animation: view-enter .34s ease both;
+}
+
+@keyframes view-enter {
+  from { opacity: 0; transform: translateY(7px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.metric-card, .panel {
+  transition: transform .22s ease, border-color .22s ease, box-shadow .22s ease, background .22s ease;
+}
+
+.metric-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(124,156,255,.2);
+  box-shadow: 0 22px 54px rgba(0,0,0,.3);
+}
+
+.panel:hover {
+  border-color: rgba(180,196,221,.15);
+}
+
+.nav-item:focus-visible,
+.icon-button:focus-visible,
+.text-button:focus-visible,
+.search-input:focus-visible,
+.select-input:focus-visible,
+.avatar:focus-visible {
+  outline: 2px solid rgba(124,156,255,.75);
+  outline-offset: 2px;
+}
+
+.chart {
+  isolation: isolate;
+}
+
+.commit-bar-wrap {
+  cursor: crosshair;
+}
+
+.commit-bar-wrap::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  left: 50%;
+  bottom: calc(var(--tip-y, 50%) + 12px);
+  z-index: 5;
+  min-width: 105px;
+  padding: 6px 8px;
+  border: 1px solid var(--border-strong);
+  border-radius: 7px;
+  color: var(--text);
+  background: rgba(8,12,20,.96);
+  box-shadow: 0 12px 30px rgba(0,0,0,.25);
+  font: 500 8px "DM Mono", monospace;
+  text-align: center;
+  opacity: 0;
+  transform: translate(-50%, 4px);
+  pointer-events: none;
+  transition: opacity .15s ease, transform .15s ease;
+}
+
+.commit-bar-wrap:hover::after {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+.commit-bar {
+  transition: height .55s cubic-bezier(.22,.61,.36,1), filter .18s ease;
+  animation: bar-rise .65s cubic-bezier(.22,.61,.36,1) both;
+}
+
+.commit-bar-wrap:hover .commit-bar {
+  filter: brightness(1.18);
+}
+
+@keyframes bar-rise {
+  from { transform: scaleY(.08); transform-origin: bottom; }
+  to { transform: scaleY(1); transform-origin: bottom; }
+}
+
+.live-chip .status-dot {
+  animation: live-pulse 1.9s ease-in-out infinite;
+}
+
+@keyframes live-pulse {
+  0%, 100% { opacity: 1; box-shadow: 0 0 0 3px rgba(89,213,163,.08), 0 0 12px rgba(89,213,163,.28); }
+  50% { opacity: .7; box-shadow: 0 0 0 5px rgba(89,213,163,.03), 0 0 16px rgba(89,213,163,.38); }
+}
+
+.empty-state::after {
+  content: "";
+  width: 32px;
+  height: 2px;
+  margin-top: 9px;
+  border-radius: 99px;
+  background: linear-gradient(90deg, transparent, rgba(124,156,255,.55), transparent);
+  animation: loading-sweep 1.4s ease-in-out infinite;
+}
+
+@keyframes loading-sweep {
+  0%, 100% { opacity: .25; transform: scaleX(.45); }
+  50% { opacity: 1; transform: scaleX(1); }
+}
+
+.pipeline-step.is-current {
+  animation: current-step 2.2s ease-in-out infinite;
+}
+
+@keyframes current-step {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-2px); }
+}
+
+.sidebar::after {
+  content: "";
+  position: absolute;
+  inset: auto 20px 88px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(124,156,255,.16), transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+}
+
+@media (max-width: 760px) {
+  body::before { opacity: .18; }
+}
