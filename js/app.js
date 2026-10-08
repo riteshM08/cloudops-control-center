@@ -110,7 +110,10 @@ function panel(title, kicker, body, action = "") {
 }
 
 function renderShell(content, eyebrowText, titleText) {
+  root.classList.remove("view-enter");
+  void root.offsetWidth;
   root.innerHTML = content;
+  root.classList.add("view-enter");
   setTopbar(state.view);
   setLastUpdated();
   const meta = document.querySelector(".hero-meta strong");
@@ -216,7 +219,7 @@ function renderCommitChart(commits) {
 
   chart.innerHTML = buckets.map((bucket) => {
     const height = Math.max(3, Math.round((bucket.count / max) * 92));
-    return `<div class="commit-bar-wrap" title="${bucket.label}: ${bucket.count} commit${bucket.count === 1 ? "" : "s"}"><span class="commit-bar" style="height:${height}%"></span><small>${bucket.count || ""}</small></div>`;
+    return `<div class="commit-bar-wrap" data-tooltip="${bucket.label} · ${bucket.count} commit${bucket.count === 1 ? "" : "s"}" title="${bucket.label}: ${bucket.count} commit${bucket.count === 1 ? "" : "s"}"><span class="commit-bar" style="height:${height}%"></span><small>${bucket.count || ""}</small></div>`;
   }).join("");
 
   if (labels) {
@@ -571,11 +574,22 @@ async function navigate(view) {
 
 navItems.forEach((item) => {
   item.addEventListener("click", () => navigate(item.dataset.view || "overview"));
+  item.addEventListener("keydown", (event) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      navigate(item.dataset.view || "overview");
+    }
+  });
 });
 
 document.addEventListener("click", (event) => {
   const go = event.target.closest("[data-go]");
   if (go) navigate(go.dataset.go);
+
+  const card = event.target.closest(".metric-card[data-action]");
+  if (card) {
+    showToast(card.dataset.action);
+  }
 });
 
 menuToggle?.addEventListener("click", () => sidebar?.classList.toggle("is-open"));
